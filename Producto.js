@@ -73,22 +73,38 @@ class Productos{
     }
     async getTotalPrice(cb){
         const objs = cb;
-        let precio;
-        let precios = objs.map((item) => {precio +=item.precio})
+        let precios = objs.map((item) => item.precio)
         let precioTotal = precios.reduce((a, b) => a + b, 0)
-        return console.log("total precio de arreglo: ", precio)
+        return console.log("total precio de arreglo: ", precioTotal)
     }
-    
+    async sellProduct(id, cb){
+        const products = cb;
+        let carrito = []
+        let addProduct = products.find((product) => product.id == id);
+        carrito.push(...carrito, addProduct)
+        return carrito;
+    }
+    async showCart(cb){
+        const carrito = cb;
+        carrito.map((producto) => {
+            return console.log(producto)
+        });
+    }
 }
 
 async function main(){
     const producto = new Productos('./data.json')
     //await producto.save({'titulo': "", 'precio': "75000"}, await producto.getAll());
     //await producto.getById(4, await producto.getAll());
-    //await contenedor.deleteById(14, await contenedor.getAll());
-    console.log(await producto.getAll());
+    //await producto.deleteById(12, await producto.getAll());
+    //console.log(await producto.getAll());
     //await deleteAll();
-    await producto.getTotalPrice(await producto.getAll());
+    //await producto.getTotalPrice(await producto.getAll());
+    await producto.sellProduct(3, await producto.getAll())
+    await producto.sellProduct(4, await producto.getAll())
+    await producto.showCart(await producto.sellProduct(5, await producto.getAll()))
     
 }
+
+
 main();
