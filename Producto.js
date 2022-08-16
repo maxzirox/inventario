@@ -1,6 +1,6 @@
 const fs = require('fs/promises');
 
-
+let carrito = [];
 class Productos{
     constructor(ruta){
         this.ruta = ruta;
@@ -79,30 +79,30 @@ class Productos{
     }
     async sellProduct(id, cb){
         const products = cb;
-        let carrito = []
         let addProduct = products.find((product) => product.id == id);
-        carrito.push(...carrito, addProduct)
-        return carrito;
+        carrito.push(addProduct)
+        
     }
-    async showCart(cb){
-        const carrito = cb;
+    async showCart(){
+        console.log('productos en carrrito: ',
         carrito.map((producto) => {
-            return console.log(producto)
-        });
+            return producto
+        }));
     }
 }
 
 async function main(){
     const producto = new Productos('./data.json')
+    const cb = await producto.getAll();
     //await producto.save({'titulo': "", 'precio': "75000"}, await producto.getAll());
     //await producto.getById(4, await producto.getAll());
     //await producto.deleteById(12, await producto.getAll());
     //console.log(await producto.getAll());
     //await deleteAll();
     //await producto.getTotalPrice(await producto.getAll());
-    await producto.sellProduct(3, await producto.getAll())
-    await producto.sellProduct(4, await producto.getAll())
-    await producto.showCart(await producto.sellProduct(5, await producto.getAll()))
+    await producto.sellProduct(3, cb)
+    await producto.sellProduct(4, cb)
+    await producto.showCart()
     
 }
 
